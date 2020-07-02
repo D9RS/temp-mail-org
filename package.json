@@ -1,0 +1,21 @@
+{
+  "name": "temp-mail-org",
+  "version": "1.0.0",
+  "description": "Simple wrapper for temp-mail.org",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "temp",
+    "mail",
+    "temp-mail.org"
+  ],
+  "author": "Shirinov Rustam <d9rs.dev@gmail.com> (https://github.com/d9rs)",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.3.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2"
+  }
+}
