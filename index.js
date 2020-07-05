@@ -10,7 +10,7 @@ const API_URL = 'api4.temp-mail.org';
  * @return {string}
  */
 function md5(source) {
-  return crypto.createHash('md5').update(source).digest('hex');
+    return crypto.createHash('md5').update(source).digest('hex');
 }
 
 /**
@@ -19,25 +19,25 @@ function md5(source) {
  * @return {Promise<string>}
  */
 function getJSON(pathname) {
-  const path = url.resolve(pathname, 'format/json');
-  return new Promise((resolve, reject) => {
-    https
-      .get({ host: API_URL, path }, (res) => {
-        if (res.statusCode < 200 || res.statusCode > 299) {
-          return reject(new Error(`Request failed: ${res.statusCode}`));
-        }
+    const path = url.resolve(pathname, 'format/json');
+    return new Promise((resolve, reject) => {
+        https
+            .get({ host: API_URL, path }, (res) => {
+                if (res.statusCode < 200 || res.statusCode > 299) {
+                    return reject(new Error(`Request failed: ${res.statusCode}`));
+                }
 
-        let data = '';
+                let data = '';
 
-        res.setEncoding('utf8');
-        res.on('data', (chunk) => {
-          data += chunk;
-        });
-        res.on('end', () => resolve(data));
-        res.on('error', reject);
-      })
-      .on('error', reject);
-  });
+                res.setEncoding('utf8');
+                res.on('data', (chunk) => {
+                    data += chunk;
+                });
+                res.on('end', () => resolve(data));
+                res.on('error', reject);
+            })
+            .on('error', reject);
+    });
 }
 
 /**
@@ -46,7 +46,7 @@ function getJSON(pathname) {
  * @return {T}
  */
 function getRandomArrayItem(array) {
-  return array[Math.round(Math.random() * (array.length - 1))];
+    return array[Math.round(Math.random() * (array.length - 1))];
 }
 
 /**
@@ -55,10 +55,11 @@ function getRandomArrayItem(array) {
  * @return {string}
  */
 function getRandomEmail(domains, len) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const name = new Array(len).fill('').map(() => getRandomArrayItem(chars)).join('');
-  const domain = getRandomArrayItem(domains);
-  return name + domain;
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const randomChars = new Array(len).fill('').map(() => getRandomArrayItem(chars));
+    const domain = getRandomArrayItem(domains);
+    const name = randomChars.join('');
+    return name + domain;
 }
 
 /**
@@ -66,7 +67,7 @@ function getRandomEmail(domains, len) {
  * @return {Promise<string[]>}
  */
 function getDomainsList() {
-  return getJSON('/request/domains/');
+    return getJSON('/request/domains/');
 }
 
 /**
@@ -75,7 +76,7 @@ function getDomainsList() {
  * @return {string}
  */
 function generateEmail(len = 7) {
-  return getDomainsList().then((domains) => getRandomEmail(domains, len));
+    return getDomainsList().then((domains) => getRandomEmail(domains, len));
 }
 
 /**
@@ -84,11 +85,11 @@ function generateEmail(len = 7) {
  * @return {Promise<Array<object> | object>}
  */
 function getAllMessages(email) {
-  if (!email) {
-    throw new Error('Please specify email');
-  }
+    if (!email) {
+        throw new Error('Please specify email');
+    }
 
-  return getJSON(`/request/mail/id/${md5(email)}/`);
+    return getJSON(`/request/mail/id/${md5(email)}/`);
 }
 
 /**
@@ -97,11 +98,11 @@ function getAllMessages(email) {
  * @return {object}
  */
 function getMessage(mailId) {
-  if (!mailId) {
-    throw new Error('Please specify mailId');
-  }
+    if (!mailId) {
+        throw new Error('Please specify mailId');
+    }
 
-  return getJSON(`/request/one_mail/id/${mailId}/`);
+    return getJSON(`/request/one_mail/id/${mailId}/`);
 }
 
 /**
@@ -110,11 +111,11 @@ function getMessage(mailId) {
  * @return {Array<string>}
  */
 function getMessageSource(mailId) {
-  if (!mailId) {
-    throw new Error('Please specify mailId');
-  }
+    if (!mailId) {
+        throw new Error('Please specify mailId');
+    }
 
-  return getJSON(`/request/source/id/${mailId}/`);
+    return getJSON(`/request/source/id/${mailId}/`);
 }
 
 /**
@@ -123,18 +124,18 @@ function getMessageSource(mailId) {
  * @return {{success: true | false}}
  */
 function deleteMessage(mailId) {
-  if (!mailId) {
-    throw new Error('Please specify mailId');
-  }
+    if (!mailId) {
+        throw new Error('Please specify mailId');
+    }
 
-  return getJSON(`/request/delete/id/${mailId}/`);
+    return getJSON(`/request/delete/id/${mailId}/`);
 }
 
 module.exports = {
-  deleteMessage,
-  getMessageSource,
-  getMessage,
-  getAllMessages,
-  generateEmail,
-  getDomainsList,
+    deleteMessage,
+    getMessageSource,
+    getMessage,
+    getAllMessages,
+    generateEmail,
+    getDomainsList,
 };
